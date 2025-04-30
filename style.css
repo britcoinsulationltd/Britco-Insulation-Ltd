@@ -275,77 +275,223 @@ nav {
 }
 
 /* Grants Section */
+/* Enhanced Grants Section Styles */
 .grants {
-    background: var(--white);
+    background: linear-gradient(135deg, var(--light-gray) 0%, var(--white) 100%);
 }
 
 .grants-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 30px;
+    margin-bottom: 50px;
 }
 
 .grant-card {
     background: var(--white);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 40px 30px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-lg);
     transition: var(--transition);
-    border-top: 5px solid var(--accent);
-    text-align: center;
     position: relative;
     overflow: hidden;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.grant-card::before {
-    content: '';
+.grant-card.eco4 {
+    border-top: 5px solid var(--primary);
+}
+
+.grant-card.gbis {
+    border-top: 5px solid var(--secondary);
+}
+
+.grant-badge {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    opacity: 0;
-    z-index: -1;
+    top: 15px;
+    right: -30px;
+    background: var(--accent);
+    color: var(--dark);
+    padding: 5px 30px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transform: rotate(45deg);
+    width: 120px;
+    text-align: center;
+}
+
+.grant-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--primary);
     transition: var(--transition);
 }
 
-.grant-card:hover,
-.grant-card:focus-within {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
-    color: var(--white);
-}
-
-.grant-card:hover::before,
-.grant-card:focus-within::before {
-    opacity: 1;
-}
-
-.grant-card:hover h3,
-.grant-card:hover p,
-.grant-card:focus-within h3,
-.grant-card:focus-within p {
-    color: var(--white);
+.gbis .grant-icon {
+    color: var(--secondary);
 }
 
 .grant-card h3 {
     font-size: 1.8rem;
     margin-bottom: 15px;
     color: var(--primary);
-    transition: var(--transition);
+}
+
+.gbis h3 {
+    color: var(--secondary);
 }
 
 .grant-card p {
     color: var(--dark-gray);
-    transition: var(--transition);
+    margin-bottom: 25px;
 }
 
-.grant-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: var(--accent);
+.grant-features {
+    margin: 20px 0;
+    flex-grow: 1;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: var(--dark-gray);
+}
+
+.feature-item i {
+    color: var(--primary);
+    margin-top: 3px;
+    font-size: 0.9rem;
+}
+
+.gbis .feature-item i {
+    color: var(--secondary);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    align-self: flex-start;
+    margin-top: auto;
+}
+
+.gbis .btn-outline {
+    border-color: var(--secondary);
+    color: var(--secondary);
+}
+
+.btn-outline:hover,
+.btn-outline:focus {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.gbis .btn-outline:hover,
+.gbis .btn-outline:focus {
+    background: var(--secondary);
+}
+
+/* Comparison Table Styles */
+.grant-comparison {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: var(--shadow-sm);
+    margin-top: 30px;
+}
+
+.grant-comparison h3 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary);
+    font-size: 1.8rem;
+}
+
+.comparison-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.comparison-header {
+    display: contents;
+}
+
+.comparison-header > div {
+    background: var(--primary);
+    color: var(--white);
+    padding: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.comparison-header .comparison-eco4 {
+    background: var(--primary-dark);
+}
+
+.comparison-header .comparison-gbis {
+    background: var(--secondary-dark);
+}
+
+.comparison-row {
+    display: contents;
+}
+
+.comparison-row > div {
+    padding: 15px;
+    border-bottom: 1px solid var(--light-gray);
+    display: flex;
+    align-items: center;
+}
+
+.comparison-feature {
+    font-weight: 500;
+    background: rgba(46, 125, 50, 0.05);
+}
+
+.comparison-eco4 {
+    background: rgba(46, 125, 50, 0.03);
+}
+
+.comparison-gbis {
+    background: rgba(0, 86, 179, 0.03);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .comparison-table {
+        grid-template-columns: 1fr;
+    }
+    
+    .comparison-header,
+    .comparison-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .comparison-header > div:first-child,
+    .comparison-row > div:first-child {
+        grid-column: 1 / span 2;
+        background: var(--primary);
+        color: var(--white);
+        text-align: center;
+    }
+    
+    .comparison-row > div:first-child {
+        background: rgba(46, 125, 50, 0.1);
+        color: var(--dark);
+        font-weight: 500;
+    }
+    
+    .grant-comparison {
+        padding: 25px 15px;
+    }
 }
 
 /* About Section */
