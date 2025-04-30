@@ -809,25 +809,17 @@
 const formData = new FormData(form);
 const plainData = Object.fromEntries(formData.entries());
 
-fetch('https://script.google.com/macros/s/AKfycby1FO6NMWNKAtwwUwi_uzAseU8cbv9RyNXlYI1Kpq31GbAL_Leqs1gXmaLlgvQrr3oVmg/exec', {
-    method: 'POST',
-    body: JSON.stringify(plainData),
-    headers: {
-        'Content-Type': 'application/json'
-    }
+fetch('https://script.google.com/macros/s/AKfycbzQFQN4UPJxPKzojJGagIyBO-Gf4_iCDdRDeefPL9RlKDrIHGG6ZSuukRQhKMmYhQJUgA/exec', {
+  method: 'POST',
+  body: JSON.stringify(plainData),
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  redirect: 'follow' // Important for Google Apps Script
 })
 .then(response => {
-    if (!response.ok) throw new Error('Submission failed');
-    return response.json();
+  if (!response.ok) {
+    return response.json().then(err => { throw err; });
+  }
+  return response.json();
 })
-.then(data => {
-    clearInterval(progressInterval);
-    formProgressBar.style.width = '100%';
-    showSuccess(); // existing function in your script
-})
-.catch(error => {
-    clearInterval(progressInterval);
-    formProgressBar.style.width = '0%';
-    errorMessage.style.display = 'flex';
-    errorMessage.querySelector('div').textContent = 'Submission failed. Please try again.';
-});
