@@ -806,8 +806,28 @@
                 */
                 
                 // Simulate API call (remove in production)
-                setTimeout(() => {
-                    clearInterval(progressInterval);
-                    formProgressBar.style.width = '100%';
-                    showSuccess();
-                },
+                const formData = new FormData(form);
+const plainData = Object.fromEntries(formData.entries());
+
+fetch('https://script.google.com/macros/s/AKfycby1FO6NMWNKAtwwUwi_uzAseU8cbv9RyNXlYI1Kpq31GbAL_Leqs1gXmaLlgvQrr3oVmg/exec', {
+    method: 'POST',
+    body: JSON.stringify(plainData),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => {
+    if (!response.ok) throw new Error('Submission failed');
+    return response.json();
+})
+.then(data => {
+    clearInterval(progressInterval);
+    formProgressBar.style.width = '100%';
+    showSuccess(); // existing function in your script
+})
+.catch(error => {
+    clearInterval(progressInterval);
+    formProgressBar.style.width = '0%';
+    errorMessage.style.display = 'flex';
+    errorMessage.querySelector('div').textContent = 'Submission failed. Please try again.';
+});
