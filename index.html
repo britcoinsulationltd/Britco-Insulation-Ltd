@@ -1821,142 +1821,76 @@ textarea:focus {
             return birthDate <= minAgeDate;
         }
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Reset form state
-            successMessage.hidden = true;
-            errorMessage.hidden = true;
-            document.querySelectorAll('.form-group').forEach(group => {
-                group.classList.remove('has-error');
-            });
-            
-            // Validate form
-            const requiredFields = form.querySelectorAll('[required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                const formGroup = field.closest('.form-group');
-                const errorMessageEl = formGroup.querySelector('.error-message');
-                
-                // Reset error messages
-                if (errorMessageEl) {
-                    errorMessageEl.textContent = 'This field is required';
-                }
-                
-                // Check required fields
-                if (!field.value || (field.type === 'checkbox' && !field.checked)) {
-                    formGroup.classList.add('has-error');
-                    isValid = false;
-                }
-                
-                // Special validation for phone
-                if (field.id === 'phone' && field.value && !validatePhone(field.value)) {
-                    formGroup.classList.add('has-error');
-                    if (errorMessageEl) {
-                        errorMessageEl.textContent = 'Please enter a valid UK phone number (e.g. 07123 456789 or +44 7123 456789)';
-                    }
-                    isValid = false;
-                }
-                
-                // Special validation for postcode
-                if (field.id === 'postcode' && field.value && !validatePostcode(field.value)) {
-                    formGroup.classList.add('has-error');
-                    if (errorMessageEl) {
-                        errorMessageEl.textContent = 'Please enter a valid UK postcode (e.g. SW1A 1AA or M1 1AA)';
-                    }
-                    isValid = false;
-                }
-                
-                // Validate date of birth
-                if (field.id === 'dob' && field.value && !validateDOB(field.value)) {
-                    formGroup.classList.add('has-error');
-                    if (errorMessageEl) {
-                        errorMessageEl.textContent = 'You must be at least 18 years old';
-                    }
-                    isValid = false;
-                }
-            });
-            
-            if (!isValid) {
-                formProgress.style.display = 'none';
-                btnText.hidden = false;
-                btnLoading.hidden = true;
-                submitBtn.disabled = false;
-                formProgressBar.style.width = '0';
-                
-                errorMessage.hidden = false;
-                errorMessage.querySelector('div').textContent = 'Please correct the errors in the form';
-                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-            // Show loading state
-            formProgress.style.display = 'block';
-            btnText.hidden = true;
-            btnLoading.hidden = false;
-            submitBtn.disabled = true;
-            
-            try {
-                // Simulate progress (remove in production)
-                let progress = 0;
-                const progressInterval = setInterval(() => {
-                    progress += 10;
-                    formProgressBar.style.width = `${progress}%`;
-                    if (progress >= 90) clearInterval(progressInterval);
-                }, 100);
-                
-                // Collect form data
-                const formData = {
-                    fullName: document.getElementById('fullName').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    dob: document.getElementById('dob').value,
-                    houseType: document.getElementById('houseType').value,
-                    bedrooms: document.getElementById('bedrooms').value,
-                    bathrooms: document.getElementById('bathrooms').value,
-                    heating: document.getElementById('heating').value,
-                    benefits: document.getElementById('benefits').value,
-                    doorNumber: document.getElementById('doorNumber').value,
-                    street: document.getElementById('street').value,
-                    postcode: document.getElementById('postcode').value,
-                    town: document.getElementById('town').value,
-                    privacyAgreement: document.getElementById('privacyAgreement').checked
-                };
-                
-                // Send to Google Apps Script
-                const response = await fetch('https://script.google.com/macros/s/AKfycbyZYcMQXOwSQxvt4xguAbZKYbLEC-trBI0oI6jze9WWsOPahvUC_DsC8PecKoNWzgyB9g/exec', {
-                    method: 'POST',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    redirect: 'follow'
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === "success") {
-                    formProgressBar.style.width = '100%';
-                    successMessage.hidden = false;
-                    form.reset();
-                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                    throw new Error(result.message || 'Submission failed');
-                }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                errorMessage.hidden = false;
-                errorMessage.querySelector('div').textContent = 
-                    error.message || 'Submission failed. Please try again.';
-                formProgressBar.style.width = '0';
-                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } finally {
-                btnText.hidden = false;
-                btnLoading.hidden = true;
-                submitBtn.disabled = false;
-            }
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Reset form state
+    successMessage.hidden = true;
+    errorMessage.hidden = true;
+    
+    // Validate form (keep your existing validation code)
+    
+    // Show loading state
+    formProgress.style.display = 'block';
+    btnText.hidden = true;
+    btnLoading.hidden = false;
+    submitBtn.disabled = true;
+    
+    try {
+        // Collect form data
+        const formData = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            dob: document.getElementById('dob').value,
+            houseType: document.getElementById('houseType').value,
+            bedrooms: document.getElementById('bedrooms').value,
+            bathrooms: document.getElementById('bathrooms').value,
+            heating: document.getElementById('heating').value,
+            benefits: document.getElementById('benefits').value,
+            doorNumber: document.getElementById('doorNumber').value,
+            street: document.getElementById('street').value,
+            postcode: document.getElementById('postcode').value,
+            town: document.getElementById('town').value,
+            privacyAgreement: document.getElementById('privacyAgreement').checked
+        };
+        
+        // Submit to Google Apps Script
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxi8ulS7QrcXXgjnlFaU1hen5oFRtVCYh77Y54sF_I3o5U7ni0McG00u36MeE5oG9Wn/exec', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
         });
-    });
+        
+        // Check if response is OK
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const result = await response.json();
+        
+        if (result.status === "success") {
+            formProgressBar.style.width = '100%';
+            successMessage.hidden = false;
+            form.reset();
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            throw new Error(result.message || 'Submission failed');
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        errorMessage.hidden = false;
+        errorMessage.querySelector('div').textContent = 
+            error.message || 'Submission failed. Please try again later or call us directly.';
+        errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } finally {
+        btnText.hidden = false;
+        btnLoading.hidden = true;
+        submitBtn.disabled = false;
+    }
+});
 </script>
 </body>
